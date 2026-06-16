@@ -1,0 +1,27 @@
+{
+  "name": "@meshkit/ionic",
+  "version": "0.1.0",
+  "description": "MeshKit Ionic SDK for decentralized storage on IPFS",
+  "main": "dist/Meshkit.js",
+  "types": "dist/Meshkit.d.ts",
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "keywords": ["ipfs", "meshkit", "ionic", "pinata", "decentralized-storage"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0",
+    "@vitest/coverage-v8": "^1.6.0",
+    "jsdom": "^24.0.0"
+  }
+}
