@@ -1,146 +1,208 @@
 # MeshKit Ionic SDK
 
-MeshKit is a developer-friendly TypeScript SDK that brings decentralized storage capabilities to Ionic applications using IPFS.
+> A developer-friendly TypeScript SDK for adding IPFS-backed decentralized storage, file handling, and messaging workflows to Ionic applications.
 
-It provides a simple API for storing JSON data, uploading files, retrieving content, sending messages, and managing IPFS-backed application data without requiring developers to understand the underlying IPFS infrastructure.
+MeshKit gives Ionic developers a clean SDK layer over decentralized storage providers. It lets applications store JSON, upload and download files, exchange IPFS-backed messages, retrieve content, and revoke pinned data without forcing application teams to manage provider-specific IPFS implementation details.
 
----
+## Badges
+
+[![npm version](https://img.shields.io/badge/npm-coming%20soon-lightgrey)](#)
+[![build](https://img.shields.io/badge/build-passing-brightgreen)](#)
+[![tests](https://img.shields.io/badge/tests-40%20passing-brightgreen)](#)
+[![license](https://img.shields.io/badge/license-MIT-blue)](#license)
+[![typescript](https://img.shields.io/badge/TypeScript-ready-blue)](#)
+
+## Table of Contents
+
+- [Why MeshKit?](#why-meshkit)
+- [Features](#features)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [API Overview](#api-overview)
+- [Supported Providers](#supported-providers)
+- [Architecture](#architecture)
+- [Testing & Validation](#testing--validation)
+- [Documentation & Resources](#documentation--resources)
+- [Build](#build)
+- [Project Status](#project-status)
+- [Roadmap](#roadmap)
+- [License](#license)
+
+## Why MeshKit?
+
+IPFS and decentralized storage are powerful, but production apps still need a predictable developer experience. MeshKit wraps provider authentication, content storage, retrieval, file operations, messaging, and revocation behind a small TypeScript API designed for Ionic projects.
+
+Use MeshKit when you want to:
+
+- Add decentralized storage to an Ionic app without building provider integrations from scratch.
+- Store structured application data as IPFS-backed JSON records.
+- Upload and retrieve files through a consistent SDK interface.
+- Validate provider connectivity before running app workflows.
+- Keep your app code portable as additional providers are introduced.
 
 ## Features
 
-* IPFS-powered decentralized storage
-* Simple Ionic-friendly TypeScript API
-* JSON storage and retrieval
-* File upload and download
-* Messaging APIs
-* Content revocation (unpinning)
-* Pinata provider integration
-* Strong TypeScript typings
-* Comprehensive API documentation
-* Automated test suite
-
----
+- IPFS-powered decentralized storage for Ionic applications.
+- Simple TypeScript SDK with strongly typed APIs.
+- JSON storage and retrieval through `store()` and `retrieve()`.
+- File upload and download support through `upload()` and `download()`.
+- Messaging primitives through `send()` and `receive()`.
+- Content revocation through provider-backed unpinning with `revoke()`.
+- Pinata provider integration.
+- Consistent provider abstraction for future storage backends.
+- Automated test coverage for core SDK behavior.
+- Public documentation and API validation resources.
 
 ## Installation
+
+Install the SDK with your package manager of choice:
 
 ```bash
 npm install @meshkit/ionic
 ```
 
----
+```bash
+yarn add @meshkit/ionic
+```
+
+```bash
+pnpm add @meshkit/ionic
+```
+
+You will also need provider credentials. For Pinata, create a JWT token from your Pinata account and pass it to `Meshkit.init()`.
 
 ## Quick Start
 
 ```ts
 import { Meshkit } from "@meshkit/ionic";
 
-const mk = await Meshkit.init({
+const meshkit = await Meshkit.init({
   provider: "pinata",
   providerToken: "PINATA_JWT",
 });
 
-// Store JSON
-const record = await mk.store({
-  hello: "world",
+await meshkit.testConnection();
+
+const stored = await meshkit.store({
+  title: "Hello MeshKit",
+  type: "example",
+  createdAt: new Date().toISOString(),
 });
 
-// Retrieve JSON
-const data = await mk.retrieve(record.cid);
+const data = await meshkit.retrieve(stored.cid);
 
-console.log(data);
+console.log("Stored CID:", stored.cid);
+console.log("Retrieved data:", data);
 ```
-
----
-
-## Supported Providers
-
-| Provider | Status       |
-| -------- | ------------ |
-| Pinata   | ✅ Supported  |
-| Filebase | 🚧 Planned   |
-| Storacha | ❌ Deprecated |
-
----
 
 ## API Overview
 
-### Initialization
+### Initialize
+
+Create a MeshKit client with a supported provider and provider token.
 
 ```ts
-const mk = await Meshkit.init({
+const meshkit = await Meshkit.init({
   provider: "pinata",
   providerToken: "PINATA_JWT",
 });
 ```
 
-### Connectivity
+### Test Provider Connectivity
+
+Validate credentials and provider availability before running storage workflows.
 
 ```ts
-await mk.testConnection();
+await meshkit.testConnection();
 ```
 
-### JSON Storage
+### Store and Retrieve JSON
 
 ```ts
-const record = await mk.store({
+const record = await meshkit.store({
   name: "Alice",
   role: "Developer",
+  project: "MeshKit",
 });
 
-const data = await mk.retrieve(record.cid);
+const restored = await meshkit.retrieve(record.cid);
 ```
 
-### File Storage
+### Upload and Download Files
 
 ```ts
-const uploaded = await mk.upload(file);
+const uploaded = await meshkit.upload(file);
 
-const downloaded = await mk.download(uploaded.cid);
+const downloaded = await meshkit.download(uploaded.cid);
 ```
 
-### Messaging
+### Send and Receive Messages
 
 ```ts
-const message = await mk.send(
-  "user_123",
-  "Hello from MeshKit"
-);
+const message = await meshkit.send("user_123", "Hello from MeshKit");
 
-const received = await mk.receive(message.cid);
+const received = await meshkit.receive(message.cid);
 ```
 
-### Revocation
+### Revoke Content
 
 ```ts
-await mk.revoke(cid);
+await meshkit.revoke(cid);
 ```
 
----
+### Available APIs
 
-## Available APIs
+| API                | Description                                      |
+| ------------------ | ------------------------------------------------ |
+| `init()`           | Initialize the SDK with provider configuration.  |
+| `testConnection()` | Validate provider credentials and connectivity.  |
+| `store()`          | Store JSON data and return a content reference.  |
+| `retrieve()`       | Retrieve JSON data by CID.                       |
+| `upload()`         | Upload a file to the configured provider.        |
+| `download()`       | Download file content by CID.                    |
+| `send()`           | Send an IPFS-backed message payload.             |
+| `receive()`        | Receive an IPFS-backed message payload.          |
+| `revoke()`         | Unpin or revoke provider-backed content by CID.  |
 
-| API                | Description                   |
-| ------------------ | ----------------------------- |
-| `init()`           | Initialize MeshKit            |
-| `testConnection()` | Validate provider credentials |
-| `store()`          | Store JSON data               |
-| `retrieve()`       | Retrieve JSON data            |
-| `upload()`         | Upload files                  |
-| `download()`       | Download files                |
-| `send()`           | Send messages                 |
-| `receive()`        | Receive messages              |
-| `revoke()`         | Unpin and revoke content      |
+## Supported Providers
 
----
+| Provider | Status      | Notes                                  |
+| -------- | ----------- | -------------------------------------- |
+| Pinata   | Supported   | Primary provider integration.          |
+| Filebase | Planned     | Targeted for future provider support.  |
+| Storacha | Deprecated  | Not planned for active SDK support.    |
 
-## Testing
+## Architecture
 
-MeshKit includes a comprehensive automated test suite.
+MeshKit exposes a stable SDK interface while isolating provider-specific behavior behind storage provider adapters.
 
-### Current Coverage
+```text
+Ionic Application
+        |
+        v
+MeshKit TypeScript SDK
+        |
+        v
+Provider Adapter
+        |
+        v
+Pinata / Future Providers
+        |
+        v
+IPFS
+```
 
-* 8 Test Files
-* 40 Passing Tests
+This structure keeps application code focused on product workflows while MeshKit handles provider configuration, request formatting, content addressing, and API-level consistency.
+
+## Testing & Validation
+
+MeshKit has been validated through automated and manual API testing.
+
+- Postman API validation completed.
+- End-to-end testing completed.
+- All APIs tested successfully.
+- HTTP 200 responses verified for successful API flows.
+- Automated test suite includes 8 test files and 40 passing tests.
 
 Run tests locally:
 
@@ -154,7 +216,34 @@ Run coverage:
 npm run test:coverage
 ```
 
----
+## Documentation & Resources
+
+### Live Documentation
+
+- GitBook Documentation:
+ [https://bittu-1.gitbook.io/meshkit-documentation](https://bittu-1.gitbook.io/meshkit-documentation)
+
+### API Validation Demo
+
+ [https://drive.google.com/file/d/1HwVDVJuyNuNG_m0kWMDnTwQTYnOoby6Q/view?usp=drivesdk](https://drive.google.com/file/d/1HwVDVJuyNuNG_m0kWMDnTwQTYnOoby6Q/view?usp=drivesdk)
+
+Local documentation is also available in the `docs/` directory:
+
+- `docs/getting-started.md`
+- `docs/installation.md`
+- `docs/authentication.md`
+- `docs/architecture.md`
+- `docs/error-handling.md`
+- `docs/api-reference.md`
+- `docs/api/init.md`
+- `docs/api/testConnection.md`
+- `docs/api/store.md`
+- `docs/api/retrieve.md`
+- `docs/api/upload.md`
+- `docs/api/download.md`
+- `docs/api/send.md`
+- `docs/api/receive.md`
+- `docs/api/revoke.md`
 
 ## Build
 
@@ -164,7 +253,7 @@ Compile the SDK:
 npm run build
 ```
 
-Generated artifacts are emitted to:
+Generated artifacts are emitted to `dist/`:
 
 ```text
 dist/
@@ -177,71 +266,19 @@ dist/
 └── providers/
 ```
 
----
+## Project Status
 
-## Documentation
-
-Complete documentation is available in the `docs/` directory.
-
-### Getting Started
-
-* docs/getting-started.md
-* docs/installation.md
-* docs/authentication.md
-
-### Core Documentation
-
-* docs/architecture.md
-* docs/error-handling.md
-* docs/api-reference.md
-
-### API Reference
-
-* docs/api/init.md
-* docs/api/testConnection.md
-* docs/api/store.md
-* docs/api/retrieve.md
-* docs/api/upload.md
-* docs/api/download.md
-* docs/api/send.md
-* docs/api/receive.md
-* docs/api/revoke.md
-
----
-
-## Architecture
-
-```text
-Application
-      │
-      ▼
-   MeshKit
-      │
-      ▼
- Storage Provider
-      │
-      ▼
-    Pinata
-      │
-      ▼
-      IPFS
-```
-
-MeshKit abstracts provider-specific implementation details and exposes a consistent developer experience across supported storage providers.
-
----
+MeshKit is in active SDK development with a working Pinata provider integration, completed API validation, and passing automated tests. The current focus is stabilizing the public API, improving documentation, and preparing the package for broader public usage.
 
 ## Roadmap
 
-* Filebase Provider
-* Encryption Layer Integration
-* React Native SDK
-* Flutter SDK
-* Multi-provider Failover
-* CI/CD Release Pipeline
-* Package Publishing
-
----
+- Filebase provider support.
+- Encryption layer integration.
+- Multi-provider failover.
+- React Native SDK exploration.
+- Flutter SDK exploration.
+- CI/CD release pipeline.
+- Public package publishing.
 
 ## License
 
