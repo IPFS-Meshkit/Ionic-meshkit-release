@@ -2,7 +2,7 @@
 
 MeshKit is a TypeScript SDK for storing and retrieving application data on decentralized storage. The current implementation uses Pinata as the storage provider and writes data to IPFS.
 
-```text
+```
 Meshkit
   -> StorageProvider
     -> PinataProvider
@@ -11,22 +11,22 @@ Meshkit
 
 ## Documentation Navigation
 
-- [Getting Started](./getting-started.md)
-- [Installation](./installation.md)
-- [Authentication](./authentication.md)
-- [Architecture Overview](./architecture.md)
-- [Error Handling](./error-handling.md)
-- [API Reference Overview](./api-reference.md)
-- API Reference
-  - [init()](./api/init.md)
-  - [testConnection()](./api/testConnection.md)
-  - [store()](./api/store.md)
-  - [retrieve()](./api/retrieve.md)
-  - [upload()](./api/upload.md)
-  - [download()](./api/download.md)
-  - [send()](./api/send.md)
-  - [receive()](./api/receive.md)
-  - [revoke()](./api/revoke.md)
+* [Getting Started](getting-started.md)
+* [Installation](installation.md)
+* [Authentication](authentication.md)
+* [Architecture Overview](architecture.md)
+* [Error Handling](error-handling.md)
+* [API Reference Overview](./)
+* API Reference
+  * [init()](api/init.md)
+  * [testConnection()](api/testConnection.md)
+  * [store()](api/store.md)
+  * [retrieve()](api/retrieve.md)
+  * [upload()](api/upload.md)
+  * [download()](api/download.md)
+  * [send()](api/send.md)
+  * [receive()](api/receive.md)
+  * [revoke()](api/revoke.md)
 
 ## Quick Example
 
@@ -84,15 +84,15 @@ console.log(invoice.invoiceId);
 
 MeshKit currently supports:
 
-- Initializing a storage client with `Meshkit.init()`
-- Testing Pinata authentication with `testConnection()`
-- Storing JSON-compatible data with `store()`
-- Retrieving JSON-compatible data with `retrieve()`
-- Uploading `Blob` or `File` objects with `upload()`
-- Downloading files as `Blob` objects with `download()`
-- Storing simple recipient messages with `send()`
-- Reading stored messages with `receive()`
-- Unpinning CIDs from Pinata with `revoke()`
+* Initializing a storage client with `Meshkit.init()`
+* Testing Pinata authentication with `testConnection()`
+* Storing JSON-compatible data with `store()`
+* Retrieving JSON-compatible data with `retrieve()`
+* Uploading `Blob` or `File` objects with `upload()`
+* Downloading files as `Blob` objects with `download()`
+* Storing simple recipient messages with `send()`
+* Reading stored messages with `receive()`
+* Unpinning CIDs from Pinata with `revoke()`
 
 ## Platform Support
 
@@ -102,9 +102,9 @@ The current implementation is tested in an Ionic application.
 
 Planned, not yet implemented:
 
-- React Native integration guidance
-- Flutter integration guidance
-- Standalone public SDK packaging
+* React Native integration guidance
+* Flutter integration guidance
+* Standalone public SDK packaging
 
 ## Minimal Workflow
 
@@ -120,7 +120,7 @@ const loaded = await meshkit.retrieve<{ hello: string }>(saved.cid);
 
 ## Related APIs
 
-- [init()](./api/init.md)
-- [testConnection()](./api/testConnection.md)
-- [store()](./api/store.md)
-- [retrieve()](./api/retrieve.md)
+* [init()](api/init.md)
+* [testConnection()](api/testConnection.md)
+* [store()](api/store.md)
+* [retrieve()](api/retrieve.md)

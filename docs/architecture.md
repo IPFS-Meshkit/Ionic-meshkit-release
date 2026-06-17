@@ -4,7 +4,7 @@ MeshKit is organized as a small SDK layer over a storage provider interface.
 
 ## Overview
 
-```text
+```
 Application
   -> Meshkit
     -> StorageProvider
@@ -61,19 +61,19 @@ flowchart TD
 
 ## Core Components
 
-| Component | Responsibility |
-| --- | --- |
-| `Meshkit` | Public SDK class. Provides `store`, `retrieve`, `upload`, `download`, `send`, `receive`, `revoke`, and `testConnection`. |
-| `StorageProvider` | Interface for JSON, file, delete, and auth operations. |
-| `PinataProvider` | Current provider implementation. Calls Pinata pinning APIs and reads from an IPFS gateway. |
-| `MeshkitRecord<T>` | Standard metadata wrapper returned by write operations. |
-| `MeshkitMessage` | Message payload model used by `send()` and `receive()`. |
+| Component          | Responsibility                                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------ |
+| `Meshkit`          | Public SDK class. Provides `store`, `retrieve`, `upload`, `download`, `send`, `receive`, `revoke`, and `testConnection`. |
+| `StorageProvider`  | Interface for JSON, file, delete, and auth operations.                                                                   |
+| `PinataProvider`   | Current provider implementation. Calls Pinata pinning APIs and reads from an IPFS gateway.                               |
+| `MeshkitRecord<T>` | Standard metadata wrapper returned by write operations.                                                                  |
+| `MeshkitMessage`   | Message payload model used by `send()` and `receive()`.                                                                  |
 
 ## Provider Flow
 
 ### JSON Storage
 
-```text
+```
 meshkit.store(data)
   -> provider.putJSON(data)
     -> POST /pinning/pinJSONToIPFS
@@ -82,7 +82,7 @@ meshkit.store(data)
 
 ### JSON Retrieval
 
-```text
+```
 meshkit.retrieve(cid)
   -> provider.getJSON(cid)
     -> GET {gatewayUrl}/{cid}
@@ -91,7 +91,7 @@ meshkit.retrieve(cid)
 
 ### File Upload
 
-```text
+```
 meshkit.upload(file)
   -> provider.putFile(file)
     -> POST /pinning/pinFileToIPFS
@@ -100,7 +100,7 @@ meshkit.upload(file)
 
 ### File Download
 
-```text
+```
 meshkit.download(cid)
   -> provider.getFile(cid)
     -> GET {gatewayUrl}/{cid}
@@ -117,13 +117,13 @@ Although the `MeshkitConfig.provider` type includes `"pinata"`, `"filebase"`, an
 
 Planned, not yet implemented:
 
-- Filebase provider support
-- Storacha provider support
+* Filebase provider support
+* Storacha provider support
 
 ## Related APIs
 
-- [API Reference Overview](./api-reference.md)
-- [store()](./api/store.md)
-- [retrieve()](./api/retrieve.md)
-- [upload()](./api/upload.md)
-- [download()](./api/download.md)
+* [API Reference Overview](./)
+* [store()](api/store.md)
+* [retrieve()](api/retrieve.md)
+* [upload()](api/upload.md)
+* [download()](api/download.md)
